@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 import validator from "validator";
 import { app } from "../../assets/firebase";
-import {set, ref, getDatabase, get, child} from "firebase/database"
+import { set, ref, getDatabase, get, child } from "firebase/database";
+import { createUserWithEmailAndPassword, getAuth } from "firebase/auth";
+import axios from "axios";
 
 const Register = () => {
   const [image, setImage] = useState("");
@@ -25,6 +27,7 @@ const Register = () => {
       };
       reader.readAsDataURL(seletedFile);
     }
+    console.log(image);
   };
 
   const handleEmailChange = (event) => {
@@ -40,24 +43,24 @@ const Register = () => {
 
   const handleValidation = () => {
     const newErrors = { ...errors };
-    // axios
-    //   .get(
-    //     `https://emailvalidation.abstractapi.com/v1/?api_key=fe2e983816134a00b20c27ba4fe80725&email=${email}`
-    //   )
-    //   .then((response) => {
-    //     console.log(response.data);
-    //     if (
-    //       response.data.is_smtp_valid.value &&
-    //       response.data.is_valid_format.value
-    //     ) {
-    //       newErrors.emailError = "Valid Email Address" ;
-    //     } else {
-    //       newErrors.emailError = "Not a Valid Email Address";
-    //     }
-    //   })
-    //   .catch((error) => {
-    //     newErrors.emailError = error;
-    //   });
+    axios
+      .get(
+        `https://emailvalidation.abstractapi.com/v1/?api_key=fe2e983816134a00b20c27ba4fe80725&email=${email}`
+      )
+      .then((response) => {
+        console.log(response.data);
+        if (
+          response.data.is_smtp_valid.value &&
+          response.data.is_valid_format.value
+        ) {
+          newErrors.emailError = "Valid Email Address" ;
+        } else {
+          newErrors.emailError = "Not a Valid Email Address";
+        }
+      })
+      .catch((error) => {
+        newErrors.emailError = error;
+      });
 
     if (!validator.isEmail(email)) {
       newErrors.emailError = "Invalid Email";
@@ -95,30 +98,38 @@ const Register = () => {
     }
   };
 
+  const auth = getAuth(app);
+
   const formSubmit = (event) => {
     event.preventDefault();
     handleValidation();
     if (registeration) {
-      alert("Register Successfully");
+      createUserWithEmailAndPassword(auth, email, password);
+      console.log(auth);
+      // set(ref(database, "profile/"), {
+      //   image,
+      // });
     }
   };
-  
-  const database = getDatabase(app);
-  const handleImageUpload = ()=>{
-    set(ref(database,"profile/"),{
-      image,
-    })
-  }
 
-  const handleShowImage = ()=>{
-    get(child(ref(database), `profile`)).then((snapShot) => {
-      setShowImage(snapShot.val());
-      console.log(snapShot.val());
-    });
-  }
+  const database = getDatabase(app);
+  // const handleImageUpload = () => {
+  //   set(ref(database, "profile/"), {
+  //     image,
+  //   });
+  // };
+
+  // const handleShowImage = () => {
+  //   get(child(ref(database), `profile`)).then((snapShot) => {
+  //     setShowImage(snapShot.val());
+  //     console.log(snapShot.val());
+  //   });
+  // };
 
   return (
     <div>
+      {/* {image && <img src={showImage.image} alt="Show" />} */}
+      {image && <img src={image} alt="Show" />}
       <form action="" onSubmit={formSubmit}>
         <label htmlFor="profileImage">Upload Your Image</label>
         <br />
@@ -130,16 +141,6 @@ const Register = () => {
           onChange={handleImageChange}
         />
         <br />
-        {image && (
-          <div>
-            <h3>Preview</h3>
-            <img
-              src={image}
-              alt="Profile"
-              style={{ width: "100px", height: "100px" }}
-            />
-          </div>
-        )}
         <br />
         <label htmlFor="email">Email</label>
         <input
@@ -173,9 +174,8 @@ const Register = () => {
         <br />
         <button type="submit">Submit</button>
       </form>
-      <button onClick={handleImageUpload}>Upload Image</button>
-      <button onClick={handleShowImage}>Show Image</button>
-      <img src={showImage.image} alt="Show" />
+      {/* <button onClick={handleImageUpload}>Upload Image</button> */}
+      {/* <button onClick={handleShowImage}>Show Image</button> */}
     </div>
   );
 };
