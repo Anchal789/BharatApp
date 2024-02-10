@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import validator from "validator";
 import { app } from "../../assets/firebase";
-import { set, ref, getDatabase, get, child } from "firebase/database";
+import { set, ref, getDatabase} from "firebase/database";
 import { createUserWithEmailAndPassword, getAuth } from "firebase/auth";
 import axios from "axios";
+import { useNavigate } from "react-router";
 
 const Register = () => {
   const [image, setImage] = useState("");
@@ -15,8 +16,10 @@ const Register = () => {
     passwordError: "",
     confirmPasswordError: "",
   });
-  const [registeration, setRegisteration] = useState(false);
-  const [showImage, setShowImage] = useState("");
+  const [registration, setRegistration] = useState(false);
+  // const [databaseLength, setDatabaseLength] = useState(0);
+
+  const navigate = useNavigate();
 
   const handleImageChange = (event) => {
     const seletedFile = event.target.files[0];
@@ -43,24 +46,24 @@ const Register = () => {
 
   const handleValidation = () => {
     const newErrors = { ...errors };
-    axios
-      .get(
-        `https://emailvalidation.abstractapi.com/v1/?api_key=fe2e983816134a00b20c27ba4fe80725&email=${email}`
-      )
-      .then((response) => {
-        console.log(response.data);
-        if (
-          response.data.is_smtp_valid.value &&
-          response.data.is_valid_format.value
-        ) {
-          newErrors.emailError = "Valid Email Address" ;
-        } else {
-          newErrors.emailError = "Not a Valid Email Address";
-        }
-      })
-      .catch((error) => {
-        newErrors.emailError = error;
-      });
+    // axios
+    //   .get(
+    //     `https://emailvalidation.abstractapi.com/v1/?api_key=fe2e983816134a00b20c27ba4fe80725&email=${email}`
+    //   )
+    //   .then((response) => {
+    //     console.log(response.data);
+    //     if (
+    //       response.data.is_smtp_valid.value &&
+    //       response.data.is_valid_format.value
+    //     ) {
+    //       newErrors.emailError = "Valid Email Address";
+    //     } else {
+    //       newErrors.emailError = "Not a Valid Email Address";
+    //     }
+    //   })
+    //   .catch((error) => {
+    //     newErrors.emailError = error;
+    //   });
 
     if (!validator.isEmail(email)) {
       newErrors.emailError = "Invalid Email";
@@ -81,38 +84,40 @@ const Register = () => {
       newErrors.confirmPasswordError = "";
     }
 
-    if (
-      newErrors.confirmPasswordError === "" &&
-      newErrors.emailError === "" &&
-      newErrors.passwordError === ""
-    ) {
-      setErrors({
-        emailError: "",
-        passwordError: "",
-        confirmPasswordError: "",
-      });
-      setRegisteration(true);
-    } else {
-      setErrors(newErrors);
-      console.log(newErrors);
-    }
+    setErrors(newErrors);
+    const noErrors = Object.values(newErrors).every((error) => error === "");
+    setRegistration(noErrors);
   };
 
+  const database = getDatabase(app);
   const auth = getAuth(app);
+
+  // get(child(ref(database), `userProfile`)).then((snapShot) => {
+  //   setDatabaseLength(Object.keys(snapShot.val()).length);
+  // });
 
   const formSubmit = (event) => {
     event.preventDefault();
     handleValidation();
-    if (registeration) {
-      createUserWithEmailAndPassword(auth, email, password);
-      console.log(auth);
-      // set(ref(database, "profile/"), {
-      //   image,
-      // });
-    }
   };
 
-  const database = getDatabase(app);
+  useEffect(() => {
+    console.log(registration);
+    if (registration) {
+      createUserWithEmailAndPassword(auth, email, password);
+      const userName = email.split("@")[0];
+      set(ref(database, `userProfile/${userName}`), {
+        userName,
+      });
+      set(ref(database, `userProfile/${userName}/userImage`), {
+        image,
+      });
+      navigate("/");
+    } else {
+      console.log("This is not working");
+    }
+  }, [registration]);
+
   // const handleImageUpload = () => {
   //   set(ref(database, "profile/"), {
   //     image,
@@ -130,7 +135,7 @@ const Register = () => {
     <div>
       {/* {image && <img src={showImage.image} alt="Show" />} */}
       {image && <img src={image} alt="Show" />}
-      <form action="" onSubmit={formSubmit}>
+      <form action="">
         <label htmlFor="profileImage">Upload Your Image</label>
         <br />
         <input
@@ -154,7 +159,7 @@ const Register = () => {
         <br />
         <label htmlFor="password">Password</label>
         <input
-          type="password"
+          type="text"
           name="password"
           id="password"
           onChange={handlePasswordChange}
@@ -172,7 +177,9 @@ const Register = () => {
         />
         <p>{errors.confirmPasswordError}</p>
         <br />
-        <button type="submit">Submit</button>
+        <button type="submit" onClick={formSubmit}>
+          Submit
+        </button>
       </form>
       {/* <button onClick={handleImageUpload}>Upload Image</button> */}
       {/* <button onClick={handleShowImage}>Show Image</button> */}
