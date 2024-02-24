@@ -1,0 +1,44 @@
+.navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: #000000; /* Adjust as needed */
+    z-index: 1000; /* Ensure it's above other content */
+}
+
+.navbar-content {
+    display: flex;
+    /* Use flexbox for layout */
+    justify-content: space-between;
+    /* Align logo and profile image to the ends */
+    align-items: center;
+    /* Align items vertically */
+}
+
+.logo {
+    width: 100px;
+    /* Set width of the logo */
+}
+  
+.logout-link {
+    background-color: rgb(230, 230, 230);
+    width: fit-content;
+    padding: 10px;
+    border-radius: 7px;
+    display: block;
+    margin-bottom: 20px;
+    color: #000000;
+    text-decoration: none;
+  }
+
+.profile-img {
+    width: 70px;
+    /* Set width of the profile image */
+    height: 70px;
+    /* Set height of the profile image */
+    border-radius: 50%;
+    /* Make it circular */
+    object-fit: cover;
+    /* Cover the container */
+}

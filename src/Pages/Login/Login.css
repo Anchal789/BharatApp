@@ -1,0 +1,97 @@
+.login-container {
+    max-width: 400px;
+    margin: 50px auto;
+    padding: 30px;
+    border-radius: 10px;
+    background-color: #f9f9f9;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    background: radial-gradient(circle, #ffcccc, #66fcff);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100%;
+    /* Ensure the login component takes up the full viewport height */
+
+}
+
+.login-form {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.login-container h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #333;
+    text-transform: uppercase;
+}
+
+.login-form-group {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.form-label {
+    font-size: 16px;
+    margin-bottom: 8px;
+    color: #040404;
+}
+
+.form-input {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-radius: 7px;
+    outline: none;
+    border-bottom: 2px solid rgb(109, 0, 49);
+    margin-bottom: 20px;
+    background-color: #fff;
+    transition: border-color 0.3s;
+}
+
+.login-button {
+    width: fit-content;
+    padding: 10px;
+    background-color: rgb(255, 0, 76);
+    border-radius: 7px;
+    color: white;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    font-size: 16px;
+    /* Increased font size */
+}
+
+.login-button:hover {
+    background-color: rgb(9, 81, 22);
+    /* Lighter shade of cyan on hover */
+}
+
+.register-link {
+    margin-top: 10px;
+    padding: 10px;
+    background-color: #070067;
+    color: white;
+    border: none;
+    border-radius: 7px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    font-size: 16px;
+    /* Increased font size */
+}
+
+.register-link:hover {
+    background-color: #008ba3;
+    /* Lighter shade of blue on hover */
+}
+
+.error-message {
+    color: red;
+    margin-top: 10px;
+    font-size: 16px;
+    /* Increased font size */
+}

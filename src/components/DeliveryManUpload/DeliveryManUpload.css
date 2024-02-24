@@ -1,0 +1,77 @@
+.deliveryman-upload-container-upload {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.form-label-upload {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.form-input-upload {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.error-msg-upload {
+    color: red;
+}
+
+.image-preview-container-upload {
+    display: flex;
+    flex-wrap: wrap;
+    margin-bottom: 15px;
+}
+
+.image-preview-upload {
+    position: relative;
+    margin-right: 10px;
+    margin-bottom: 10px;
+}
+
+.preview-img-upload {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.delete-btn-upload {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    padding: 5px 10px;
+    background-color: red;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.file-input-upload {
+    margin-bottom: 15px;
+}
+
+.upload-btn-upload {
+    background-color: #007bff;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.uploading-text-upload {
+    font-style: italic;
+    margin-bottom: 10px;
+}
+
+.success-msg-upload {
+    color: green;
+}

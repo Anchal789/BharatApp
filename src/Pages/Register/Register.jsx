@@ -1,13 +1,18 @@
-import React, { useEffect, useState } from "react";
+import React, { useMemo, useState } from "react";
 import validator from "validator";
 import { app } from "../../assets/firebase";
-import { set, ref, getDatabase} from "firebase/database";
+import { set, ref, getDatabase } from "firebase/database";
 import { createUserWithEmailAndPassword, getAuth } from "firebase/auth";
 import axios from "axios";
 import { useNavigate } from "react-router";
+import { getStorage, uploadBytes, ref as sref } from "firebase/storage";
+import { v4 } from "uuid";
+import "./Register.css";
 
 const Register = () => {
   const [image, setImage] = useState("");
+  const [previewImage, setPreviewImage] = useState("");
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -15,10 +20,11 @@ const Register = () => {
     emailError: "",
     passwordError: "",
     confirmPasswordError: "",
+    imageError: "",
   });
   const [registration, setRegistration] = useState(false);
   // const [databaseLength, setDatabaseLength] = useState(0);
-
+  const imageDb = getStorage(app);
   const navigate = useNavigate();
 
   const handleImageChange = (event) => {
@@ -26,11 +32,11 @@ const Register = () => {
     if (seletedFile) {
       const reader = new FileReader();
       reader.onload = (e) => {
-        setImage(e.target.result);
+        setPreviewImage(e.target.result);
       };
       reader.readAsDataURL(seletedFile);
     }
-    console.log(image);
+    setImage(event.target.files[0]);
   };
 
   const handleEmailChange = (event) => {
@@ -46,30 +52,30 @@ const Register = () => {
 
   const handleValidation = () => {
     const newErrors = { ...errors };
-    // axios
-    //   .get(
-    //     `https://emailvalidation.abstractapi.com/v1/?api_key=fe2e983816134a00b20c27ba4fe80725&email=${email}`
-    //   )
-    //   .then((response) => {
-    //     console.log(response.data);
-    //     if (
-    //       response.data.is_smtp_valid.value &&
-    //       response.data.is_valid_format.value
-    //     ) {
-    //       newErrors.emailError = "Valid Email Address";
-    //     } else {
-    //       newErrors.emailError = "Not a Valid Email Address";
-    //     }
-    //   })
-    //   .catch((error) => {
-    //     newErrors.emailError = error;
-    //   });
+    axios
+      .get(
+        `https://emailvalidation.abstractapi.com/v1/?api_key=fe2e983816134a00b20c27ba4fe80725&email=${email}`
+      )
+      .then((response) => {
+        console.log(response.data);
+        if (
+          response.data.is_smtp_valid.value === true &&
+          response.data.is_valid_format.value === true
+        ) {
+          newErrors.emailError = "Valid Email Address";
+        } else {
+          newErrors.emailError = "Not a Valid Email Address";
+        }
+      })
+      .catch((error) => {
+        newErrors.emailError = error;
+      });
 
-    if (!validator.isEmail(email)) {
-      newErrors.emailError = "Invalid Email";
-    } else {
-      newErrors.emailError = "";
-    }
+    // if (!validator.isEmail(email)) {
+    //   newErrors.emailError = "Invalid Email";
+    // } else {
+    //   newErrors.emailError = "";
+    // }
 
     if (!validator.isStrongPassword(password)) {
       newErrors.passwordError =
@@ -82,6 +88,11 @@ const Register = () => {
       newErrors.confirmPasswordError = "Password doesn't match";
     } else {
       newErrors.confirmPasswordError = "";
+    }
+    if (image === "") {
+      newErrors.imageError = "Please upload the image";
+    } else {
+      newErrors.imageError = "";
     }
 
     setErrors(newErrors);
@@ -101,22 +112,31 @@ const Register = () => {
     handleValidation();
   };
 
-  useEffect(() => {
-    console.log(registration);
+  const submission = () => {
     if (registration) {
-      createUserWithEmailAndPassword(auth, email, password);
-      const userName = email.split("@")[0];
-      set(ref(database, `userProfile/${userName}`), {
-        userName,
-      });
-      set(ref(database, `userProfile/${userName}/userImage`), {
-        image,
-      });
-      navigate("/");
+      try {
+        createUserWithEmailAndPassword(auth, email, password);
+        const userName = email.split("@")[0];
+        set(ref(database, `userProfile/${userName}/userName`), {
+          name,
+        });
+        const imgRef = sref(
+          imageDb,
+          `userFiles/${userName}/userProfileImage/${v4()}`
+        );
+        uploadBytes(imgRef, image);
+        set(ref(database, `userProfile/${userName}/userEmail`), {
+          email,
+        });
+        // navigate("/");
+        setErrors({ confirmPasswordError: "Register Successfully!" });
+      } catch (error) {}
     } else {
-      console.log("This is not working");
+      console.log("");
     }
-  }, [registration]);
+  };
+
+  const Event = useMemo(() => submission(), [registration]);
 
   // const handleImageUpload = () => {
   //   set(ref(database, "profile/"), {
@@ -132,57 +152,92 @@ const Register = () => {
   // };
 
   return (
-    <div>
-      {/* {image && <img src={showImage.image} alt="Show" />} */}
-      {image && <img src={image} alt="Show" />}
-      <form action="">
-        <label htmlFor="profileImage">Upload Your Image</label>
-        <br />
-        <input
-          type="file"
-          name="Image"
-          id="profileImage"
-          accept="image/*"
-          onChange={handleImageChange}
-        />
-        <br />
-        <br />
-        <label htmlFor="email">Email</label>
-        <input
-          type="text"
-          name="email"
-          id="email"
-          onChange={handleEmailChange}
-          value={email}
-        />
-        <p>{errors.emailError}</p>
-        <br />
-        <label htmlFor="password">Password</label>
-        <input
-          type="text"
-          name="password"
-          id="password"
-          onChange={handlePasswordChange}
-          value={password}
-        />
-        <p>{errors.passwordError}</p>
-        <br />
-        <label htmlFor="confirmPassword">Confirm Password</label>
-        <input
-          type="text"
-          name="confirmPassword"
-          id="confirmPassword"
-          onChange={handleConfirmPasswordChange}
-          value={confirmPassword}
-        />
-        <p>{errors.confirmPasswordError}</p>
-        <br />
-        <button type="submit" onClick={formSubmit}>
-          Submit
+    <div className="register-component">
+      <div className="register-container">
+        <h2>Register</h2>
+        <form className="register-form">
+          <div className="register-form-group">
+            {previewImage && (
+              <img src={previewImage} className="previewImage" alt="Show" />
+            )}
+            <label htmlFor="profileImage" className="profileImage-input-label">
+             <b> Upload Your Image</b>
+            </label>
+            <input
+              type="file"
+              name="Image"
+              className="profileImage-file-input"
+              id="profileImage"
+              accept="image/*"
+              onChange={handleImageChange}
+            />
+            {errors.imageError && (
+              <p className="error-message">{errors.imageError}</p>
+            )}
+          </div>
+
+          <label htmlFor="name"><b>Name</b></label>
+          <input
+            type="text"
+            name="name"
+            id="name"
+            onChange={(event) => {
+              setName(event.target.value);
+            }}
+            value={name}
+          />
+
+          <label htmlFor="email"><b>Email</b></label>
+          <input
+            type="email"
+            name="email"
+            id="email"
+            onChange={handleEmailChange}
+            value={email}
+          />
+          {errors.emailError && (
+            <p className="error-message">{errors.emailError}</p>
+          )}
+
+          <label htmlFor="password"><b>Password</b></label>
+          <input
+            type="password"
+            name="password"
+            id="password"
+            onChange={handlePasswordChange}
+            value={password}
+          />
+          {errors.passwordError && (
+            <p className="error-message">{errors.passwordError}</p>
+          )}
+
+          <label htmlFor="confirmPassword"><b>Confirm Password</b></label>
+          <input
+            type="password"
+            name="confirmPassword"
+            id="confirmPassword"
+            onChange={handleConfirmPasswordChange}
+            value={confirmPassword}
+          />
+          {errors.confirmPasswordError && (
+            <p className="error-message">{errors.confirmPasswordError}</p>
+          )}
+
+          <button type="submit" onClick={formSubmit}>
+            <b>Submit</b>
+          </button>
+        </form>
+        <p>Already have an account?</p>
+        <button
+          onClick={() => {
+            navigate("/");
+          }}
+          id="registerToLoginBtn"
+        >
+          Login
         </button>
-      </form>
-      {/* <button onClick={handleImageUpload}>Upload Image</button> */}
-      {/* <button onClick={handleShowImage}>Show Image</button> */}
+        <h1>{Event}</h1>
+      </div>
     </div>
   );
 };

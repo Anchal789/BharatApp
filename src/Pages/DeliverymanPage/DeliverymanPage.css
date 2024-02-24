@@ -1,0 +1,14 @@
+.deliveryman-page {
+    max-width: 800px;
+    margin-top: 10px;
+    padding: 20px;
+    background-color: #f4f4f4;
+    border-radius: 10px;
+}
+
+
+.components-container {
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+}
