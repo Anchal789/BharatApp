@@ -4,15 +4,13 @@
     padding: 30px;
     border-radius: 10px;
     background-color: #f9f9f9;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    background: radial-gradient(circle, #ffcccc, #66fcff);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.6);
+    background: radial-gradient(circle, #ffcccc, #bebebe);
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     min-height: 100%;
-    /* Ensure the login component takes up the full viewport height */
-
 }
 
 .login-form {
@@ -33,6 +31,25 @@
     justify-content: center;
     align-items: center;
     flex-direction: column;
+}
+
+.loader-div{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    background-color: #86868685;
+    position: absolute;
+}
+
+.login-loader{
+    position: absolute;
+    background: #fbfbfb;
+    outline: none;
+    border: none;
+    mix-blend-mode: darken;
+    width: 400px;
 }
 
 .form-label {

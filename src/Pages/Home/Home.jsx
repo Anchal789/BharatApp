@@ -8,7 +8,7 @@ import AdminPage from "../AdminPage/AdminPage";
 import DeliverymanPage from "../DeliverymanPage/DeliverymanPage";
 
 const Home = () => {
-  const user = useSelector((state) => state.auth.profile);
+  const phone = useSelector((state) => state.auth.profile.phone);
   const authentication = useSelector((state) => state.auth.authentication);
   const navigate = useNavigate();
   // const dispatch = useDispatch();
@@ -28,18 +28,17 @@ const Home = () => {
 
   useEffect(() => {
       get(
-        child(ref(database), `userProfile/${user?.user?.split("@")[0]}/admin`)
+        child(ref(database), `userProfile/${phone}/admin`)
       ).then((snapShot) => {
         setAdminFlag(snapShot.val());
       });
-  },[database, user.user]);
+  },[database, phone]);
 
   return (
     <div>
       {
         adminFlag ? <AdminPage></AdminPage> : <DeliverymanPage></DeliverymanPage>
       }
-      <img src={user.userImage} alt="" />
     </div>
   );
 };

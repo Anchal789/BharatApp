@@ -1,9 +1,9 @@
-import {getDatabase, ref, set } from "firebase/database";
-import React, {useState } from "react";
+import { getDatabase, ref, set } from "firebase/database";
+import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import { app } from "../../assets/firebase";
 import { getStorage, ref as sref, uploadBytes } from "firebase/storage";
-import "./DeliveryManUpload.css"
+import "./DeliveryManUpload.css";
 
 const DeliveryManUpload = () => {
   const [images, setImages] = useState([]);
@@ -18,7 +18,7 @@ const DeliveryManUpload = () => {
   const [uploadingText, setUploadingText] = useState("");
   // const [mySubmissionLength, setMySubmissionLength] = useState(0);
   const [uploadSuccess, setUploadSuccess] = useState(false);
-  const userName = useSelector((state) => state.auth.profile.user);
+  const phone = useSelector((state) => state.auth.profile.phone);
   const database = getDatabase(app);
   const imageDb = getStorage(app);
 
@@ -32,7 +32,7 @@ const DeliveryManUpload = () => {
   //     get(
   //       child(
   //         ref(database),
-  //         `userProfile/${userName.split("@")[0]}/mySubmission/`
+  //         `userProfile/${phone}/mySubmission/`
   //       )
   //     ).then((snapShot) => {
   //       try {
@@ -79,9 +79,7 @@ const DeliveryManUpload = () => {
         set(
           ref(
             database,
-            `userProfile/${userName.split("@")[0]}/mySubmission/${
-              customerInfo.lpgID
-            }/timeDate`
+            `userProfile/${phone}/mySubmission/${customerInfo.lpgID}/timeDate`
           ),
           {
             timeDate,
@@ -90,9 +88,7 @@ const DeliveryManUpload = () => {
         set(
           ref(
             database,
-            `userProfile/${
-              userName.split("@")[0]
-            }/mySubmission/${customerInfo.lpgID}/customerInfo`
+            `userProfile/${phone}/mySubmission/${customerInfo.lpgID}/customerInfo`
           ),
           {
             customerInfo,
@@ -102,11 +98,9 @@ const DeliveryManUpload = () => {
         for (let i = 0; i < images.length; i++) {
           const imgRef = sref(
             imageDb,
-            `userFiles/${userName.split("@")[0]}/mySubmission/${
-              customerInfo.lpgID
-            }/${images[i].name}`
+            `userFiles/${phone}/mySubmission/${customerInfo.lpgID}/${images[i].name}`
           );
-          const result = await uploadBytes(imgRef, images[i])
+          await uploadBytes(imgRef, images[i])
             .then(() => {
               setUploadingText("Upload... Please Wait");
             })
@@ -227,11 +221,17 @@ const DeliveryManUpload = () => {
           </div>
         ))}
       </div>
-      <button className="upload-btn-upload" onClick={uploadImages} type="submit">
+      <button
+        className="upload-btn-upload"
+        onClick={uploadImages}
+        type="submit"
+      >
         Upload
       </button>
       <p className="uploading-text-upload">{uploadingText}</p>
-      {uploadSuccess && <p className="success-msg-upload">Uploaded Successfully</p>}
+      {uploadSuccess && (
+        <p className="success-msg-upload">Uploaded Successfully</p>
+      )}
     </div>
   );
 };

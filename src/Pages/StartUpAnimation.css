@@ -1,0 +1,91 @@
+.loading-screen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url("../assets/desktop\ background.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+  align-items: center;
+  z-index: 9999; /* Ensure the loading screen is on top of other content */
+  opacity: 1;
+  transition: opacity 3s ease-in-out; /* Smooth opacity transition */
+  animation: scaleIn 1s forwards; /* Scale and fade-in animation for logo */
+
+}
+
+@media screen and (max-width : 480px) {
+  .loading-screen{
+    background-image: url("../assets/mobile\ background.jpg");
+    opacity: 1;
+  }
+  .startupFooter{
+    bottom: 0;
+    position: fixed;
+  }
+}
+/* 
+.loading-screen::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(176, 176, 176, 0.9);
+  z-index: -1;
+} */
+
+.loading-screen.fade-out {
+  opacity: 0;
+}
+
+.logo-container {
+  animation: scaleIn 1s forwards; /* Scale and fade-in animation for logo */
+}
+
+.startup-logo {
+  width: 200px; /* Adjust the size of your logo */
+  height: auto;
+  border-radius: 50%;
+}
+
+.text-container {
+  text-align: center;
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+}
+
+.loading-text {
+  font-size: 32px;
+  color: #000000; /* Text color */
+}
+
+.subtext {
+  font-size: 30px;
+  color: #000000; /* Text color */
+}
+
+.startupFooter{
+  bottom: 0;
+  position: fixed;
+}
+
+@keyframes scaleIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.5); /* Start with smaller size */
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1); /* Scale up to normal size */
+  }
+}
+

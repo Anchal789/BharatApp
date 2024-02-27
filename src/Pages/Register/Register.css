@@ -5,7 +5,7 @@
     border-radius: 10px;
     background-color: #f9f9f9;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    background: radial-gradient(circle, #ffcccc, #66fcff);
+    background: radial-gradient(circle, #ffcccc, #bebebe);
 }
 
 .register-container h2 {
@@ -46,7 +46,7 @@
 }
 
 .register-form input[type="text"],
-.register-form input[type="email"],
+.register-form input[type="number"],
 .register-form input[type="password"] {
     padding: 12px;
     border: none;
@@ -59,7 +59,7 @@
 }
 
 .register-form input[type="text"]:focus,
-.register-form input[type="email"]:focus,
+.register-form input[type="number"]:focus,
 .register-form input[type="password"]:focus {
     outline: none;
     border-color: #007bff;

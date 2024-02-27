@@ -2,8 +2,7 @@ import { createSlice } from '@reduxjs/toolkit'
 
 const initialState = {
     profile: {
-        image: "",
-        email: "",
+        phone: "",
         userName : ""
     },
     authentication: false,
@@ -23,12 +22,10 @@ export const authSlice = createSlice({
         },
         logout: (state) => {
             state.profile = {
-                image: "",
-                email: "",
+                phone: "",
                 userName : ""
             }
             state.authentication = false
-            state.email = ""
         },
     },
 })
