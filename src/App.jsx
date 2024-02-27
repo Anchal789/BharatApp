@@ -45,12 +45,6 @@ function App() {
               />
             </Routes>
           </main>
-          <footer className="main-footer">
-            Designed By{" "}
-            <a href="https://www.linkedin.com/in/anchal-deshmukh-2315241a0/">
-              AnchalDeshmukh
-            </a>
-          </footer>
         </div>
       )}
     </ErrorBoundry>
