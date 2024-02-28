@@ -8,6 +8,8 @@ import ErrorBoundry from "./Pages/ErrorBoundry";
 import { useEffect, useState } from "react";
 import DeliveryManPost from "./components/DeliveryManPost/DeliveryManPost";
 import LoadingScreen from "./Pages/StartUpAnimation";
+import { Helmet } from "react-helmet";
+import BannerAd from "./components/AdSense/BannerAd";
 
 function App() {
   const [isLoading, setIsLoading] = useState(true);
@@ -28,6 +30,13 @@ function App() {
   }, []);
   return (
     <ErrorBoundry>
+      <Helmet>
+        <script
+          async
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4197896435460491"
+          crossorigin="anonymous"
+        ></script>
+      </Helmet>
       {isLoading ? (
         <LoadingScreen />
       ) : (
@@ -45,6 +54,7 @@ function App() {
               />
             </Routes>
           </main>
+          <BannerAd/>
         </div>
       )}
     </ErrorBoundry>

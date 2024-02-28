@@ -5,6 +5,7 @@ import "./StartUpAnimation.css"; // CSS file for styling
 const LoadingScreen = () => {
   return (
     <div className="loading-screen">
+      
       <div className="logo-container">
         <img src={logo} alt="Logo" className="startup-logo" />
       </div>
