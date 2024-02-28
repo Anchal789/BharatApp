@@ -1,18 +1,17 @@
-import React, { useEffect } from 'react';
+import React, { useEffect } from "react";
 
 const BannerAd = () => {
   useEffect(() => {
-    // Trigger the AdSense ad rendering after the component mounts
-    if (window.adsbygoogle) {
-      window.adsbygoogle.push({});
-    }
+    try {
+      (window.adsbygoogle = window.adsbygoogle || []).push({});
+    } catch (e) {}
   }, []);
 
   return (
     <div>
       <ins
         className="adsbygoogle"
-        style={{ display: 'block' }}
+        style={{ display: "block" }}
         data-ad-client="ca-pub-4197896435460491"
         data-ad-slot="9474994711"
         data-ad-format="auto"
