@@ -8,7 +8,7 @@ const BannerAd = () => {
   }, []);
 
   return (
-    <div>
+    <div style={{position: "fixed"}}>
       <ins
         className="adsbygoogle"
         style={{ display: "block" }}
