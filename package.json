@@ -1,6 +1,5 @@
 {
   "name": "bharat-app",
-  "homepage": "https://easeite.netlify.app/",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
