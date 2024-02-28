@@ -22,6 +22,9 @@ const Home = () => {
     if (!result) {
       navigate("/");
     }
+    if(result){
+      navigate("/home")
+    }
 
     // throw new Error("There is an error");
   }, [authentication, navigate]);

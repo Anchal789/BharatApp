@@ -8,6 +8,7 @@ import ErrorBoundry from "./Pages/ErrorBoundry";
 import { useEffect, useState } from "react";
 import DeliveryManPost from "./components/DeliveryManPost/DeliveryManPost";
 import LoadingScreen from "./Pages/StartUpAnimation";
+import BannerAd from "./components/AdSense/BannerAd";
 
 function App() {
   const [isLoading, setIsLoading] = useState(true);
@@ -22,7 +23,7 @@ function App() {
   useEffect(() => {
     const timeout = setTimeout(() => {
       setIsLoading(false);
-    }, 3000); 
+    }, 3000);
 
     return () => clearTimeout(timeout);
   }, []);
@@ -45,6 +46,7 @@ function App() {
               />
             </Routes>
           </main>
+          <footer className="main-foorer"></footer>
         </div>
       )}
     </ErrorBoundry>
