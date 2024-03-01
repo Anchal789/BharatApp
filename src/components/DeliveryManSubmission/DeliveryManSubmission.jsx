@@ -111,15 +111,13 @@ const DeliveryManSubmission = () => {
           setShowSubmission(!showSubmission);
         }}
       >
-        {!showSubmission  ? "My Submission" : "Close"}
+        {!showSubmission ? "My Submission" : "Close"}
       </button>
       {showSubmission && (
         <div className="submission-details">
           {error && <p className="error-message">{error.messages}</p>}
           {!loading && !error && mySubmission === null && (
-            <p className="no-submissions-message">
-              No Post
-            </p>
+            <p className="no-submissions-message">No Post</p>
           )}
           {loading && <img className="loader" src={loadingGif} alt="" />}
           {!loading &&
@@ -127,26 +125,14 @@ const DeliveryManSubmission = () => {
             mySubmission.length > 0 &&
             Object.values(mySubmission)?.map((obj, index) => (
               <div key={index} className="submission-card">
-                <p className="submission-info">
-                  Posted On : {obj.details?.timeDate?.timeDate?.date} at{" "}
-                  {obj.details?.timeDate?.timeDate?.time}
-                </p>
-                <p className="submission-info">
-                  LPG ID : {obj.details?.customerInfo?.customerInfo?.lpgID}
-                </p>
-                <p className="submission-info">
-                  Customer Name :{" "}
-                  {obj.details?.customerInfo?.customerInfo?.consumerName}
-                </p>
-                <p className="submission-info">
-                  Customer City :{" "}
-                  {obj.details?.customerInfo?.customerInfo?.consumerCity}
-                </p>
-                <p className="submission-info">
-                  Mobile :{" "}
-                  {obj.details?.customerInfo?.customerInfo?.consumerMobile}
-                </p>
-                <div className="submission-images">
+                <div className="card-details-name postedBY">
+                  <p>{obj.details?.customerInfo?.customerInfo?.consumerName}</p>
+                </div>
+                <div className="card-details">
+                  <p>{obj.details?.timeDate?.timeDate?.date}</p>
+                  <p>{obj.details?.timeDate?.timeDate?.time}</p>
+                </div>
+                <div className="image-gallery-container">
                   {obj.images &&
                     obj.images.map((img, index) => (
                       <img
@@ -156,6 +142,20 @@ const DeliveryManSubmission = () => {
                         alt={`${index}`}
                       />
                     ))}
+                </div>
+                <div className="card-details">
+                  <p>LPG ID</p>
+                  <p>{obj.details?.customerInfo?.customerInfo?.lpgID}</p>
+                </div>
+                <div className="card-details">
+                  <p>Customer City</p>
+                  <p>{obj.details?.customerInfo?.customerInfo?.consumerCity}</p>
+                </div>
+                <div className="card-details">
+                  <p>Mobile</p>
+                  <a href={`tel:+91${obj.details?.customerInfo?.customerInfo?.consumerMobile}`}>
+                    {obj.details?.customerInfo?.customerInfo?.consumerMobile}
+                  </a>
                 </div>
               </div>
             ))}

@@ -75,53 +75,67 @@ const AdminPage = () => {
                     submission.timeDate?.timeDate?.date === currentDate
                 );
                 const hasSubmissionsToday = todaysSubmissions.length > 0;
-                return hasSubmissionsToday ? (
-                  todaysSubmissions.map((sub, subIndex) => (
+                if (hasSubmissionsToday) {
+                  return todaysSubmissions.map((sub, subIndex) => (
                     <div
                       key={`${index}-${subIndex}`}
                       className="admin-submission-card"
                     >
-                      <p>Posted By: {obj.userName.name}</p>
-                      <p>
-                        Posted on: {sub.timeDate?.timeDate?.date} at{" "}
-                        {sub.timeDate?.timeDate?.time}
-                      </p>
-                      <p>LPG ID: {sub.customerInfo?.customerInfo?.lpgID}</p>
-                      <p>
-                        Consumer Name:{" "}
-                        {sub.customerInfo?.customerInfo?.consumerName}
-                      </p>
-                      <p>
-                        Consumer City:{" "}
-                        {sub.customerInfo?.customerInfo?.consumerCity}
-                      </p>
-                      <p>
-                        Mobile: {sub.customerInfo?.customerInfo?.consumerMobile}
-                      </p>
+                      <div className="card-details-name">
+                        <h4>{sub.customerInfo?.customerInfo?.consumerName}</h4>
+                      </div>
                       <div className="image-gallery-container">
                         <ImageGallery
                           phone={obj.phone.phone}
-                          lpgID={subIndex}
+                          lpgID={sub.customerInfo?.customerInfo?.lpgID}
                         />
                       </div>
+                      <div className="card-details">
+                        <p>{sub.timeDate?.timeDate?.date} </p>
+                        <p>{sub.timeDate?.timeDate?.time}</p>
+                      </div>
+                      <div className="card-details">
+                        <p>LPG ID</p>
+                        <p>{sub.customerInfo?.customerInfo?.lpgID}</p>
+                      </div>
+
+                      <div className="card-details">
+                        <p>City</p>
+                        <p>{sub.customerInfo?.customerInfo?.consumerCity}</p>
+                      </div>
+                      <div className="card-details">
+                        <p>Mobile</p>
+                        <a
+                          href={`tel:+91${sub.customerInfo?.customerInfo?.consumerMobile}`}
+                        >
+                          {sub.customerInfo?.customerInfo?.consumerMobile}
+                        </a>
+                      </div>
+                      <div className="postedBY">
+                        <p>{obj.userName.name}</p>
+                      </div>
                     </div>
-                  ))
-                ) : (
-                  <div key={`${index}`} className="admin-submission-empty-card">
-                    {index === 0 && (
-                      <>
-                        <h2>No Submissions for Today</h2>{" "}
-                        <img
-                          className="nothingHereAnimation"
-                          src={NothingHereAnimation}
-                        ></img>
-                      </>
-                    )}
-                  </div>
-                );
+                  ));
+                }
               }
               return null;
             })}
+            {/* Render "No Submissions for Today" card only if no submissions for today */}
+            {submission.every(
+              (obj) =>
+                !Object.values(obj.mySubmission || {}).some(
+                  (sub) => sub.timeDate?.timeDate?.date === currentDate
+                )
+            ) && (
+              <div className="admin-submission-empty-card">
+                <h2>No Submissions for Today</h2>
+                <img
+                  className="nothingHereAnimation"
+                  src={NothingHereAnimation}
+                  alt="Nothing Is Here."
+                />
+              </div>
+            )}
           </div>
         ) : (
           <div className="byDeliveryMan">
@@ -161,7 +175,7 @@ const ImageGallery = ({ phone, lpgID }) => {
       try {
         const imageRef = sref(
           storage,
-          `userFiles/${phone}/mySubmission/${lpgID}`
+          `userFiles/${phone}/mySubmission/${lpgID}/`
         );
         const imageList = await listAll(imageRef);
         const urls = await Promise.all(
@@ -176,16 +190,14 @@ const ImageGallery = ({ phone, lpgID }) => {
       }
     };
     fetchImageUrls();
-  }, [phone, lpgID, storage]);
+  }, [phone, storage, lpgID]);
 
   return (
-    <div className="image-gallery">
-      {" "}
-      {/* Apply gallery class */}
+    <>
       {imageUrls.map((url, index) => (
         <img key={index} src={url} alt={`${index}`} />
       ))}
-    </div>
+    </>
   );
 };
 

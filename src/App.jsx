@@ -9,7 +9,6 @@ import { useEffect, useState } from "react";
 import DeliveryManPost from "./components/DeliveryManPost/DeliveryManPost";
 import LoadingScreen from "./Pages/StartUpAnimation";
 import { Helmet } from "react-helmet";
-import BannerAd from "./components/AdSense/BannerAd";
 
 function App() {
   const [isLoading, setIsLoading] = useState(true);
