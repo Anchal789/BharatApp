@@ -9,6 +9,7 @@ import {
   ref as sref,
 } from "firebase/storage";
 import "./DeliveryManSubmission.css";
+import loadingGif from "../../assets/loading.gif";
 
 const DeliveryManSubmission = () => {
   const [mySubmission, setMysubmission] = useState([]);
@@ -21,8 +22,8 @@ const DeliveryManSubmission = () => {
   const imageDb = getStorage(app);
 
   const mySubmittedImages = useCallback(async () => {
-    setLoading(true);
     try {
+      setLoading(true);
       const submissionRef = ref(database, `userProfile/${phone}/mySubmission/`);
       const snapshot = await get(submissionRef);
       const submissions = snapshot.val();
@@ -59,19 +60,21 @@ const DeliveryManSubmission = () => {
           })
           .catch((error) => {
             console.log("Error retrieving images:", error);
+            setLoading(false);
           })
           .finally(() => {
             setLoading(false);
           });
+        setLoading(false);
       }
     } catch (error) {
-      console.log(error);
       setError(error);
       setLoading(false);
     } finally {
+      setLoading(false);
       setApiCalled(true);
     }
-  }, [ imageDb]);
+  }, [imageDb]);
 
   useEffect(() => {
     try {
@@ -108,17 +111,17 @@ const DeliveryManSubmission = () => {
           setShowSubmission(!showSubmission);
         }}
       >
-        My Submission
+        {!showSubmission  ? "My Submission" : "Close"}
       </button>
       {showSubmission && (
         <div className="submission-details">
-          {loading && <p>Loading submissions...</p>}
           {error && <p className="error-message">{error.messages}</p>}
           {!loading && !error && mySubmission === null && (
             <p className="no-submissions-message">
-              No submissions found. Please upload your submissions.
+              No Post
             </p>
           )}
+          {loading && <img className="loader" src={loadingGif} alt="" />}
           {!loading &&
             mySubmission !== null &&
             mySubmission.length > 0 &&

@@ -3,6 +3,7 @@ body {
     height: 100%; /* Ensure html and body cover the entire viewport */
     margin: 0; /* Remove default margin */
     padding: 0; /* Remove default padding */
+    overflow: auto;
 }
 
 
@@ -12,6 +13,7 @@ body {
     height: 100vh;
     position: relative;
     background-image: url("./assets/desktop\ background.jpg");
+    background-attachment: fixed;
 }
 
 @media screen and (max-width : 480px) {

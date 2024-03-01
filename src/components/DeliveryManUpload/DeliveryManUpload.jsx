@@ -4,10 +4,11 @@ import { useSelector } from "react-redux";
 import { app } from "../../assets/firebase";
 import { getStorage, ref as sref, uploadBytes } from "firebase/storage";
 import "./DeliveryManUpload.css";
+import BannerAd from "../AdSense/BannerAd";
+import { Helmet } from "react-helmet";
 
 const DeliveryManUpload = () => {
   const [images, setImages] = useState([]);
-  // const [imagesToBeUpload, setImagesToBeUpload] = useState([]);
   const [customerInfo, setCustomerInfo] = useState({
     lpgID: "",
     consumerName: "",
@@ -16,7 +17,6 @@ const DeliveryManUpload = () => {
   });
   const [error, setError] = useState("");
   const [uploadingText, setUploadingText] = useState("");
-  // const [mySubmissionLength, setMySubmissionLength] = useState(0);
   const [uploadSuccess, setUploadSuccess] = useState(false);
   const phone = useSelector((state) => state.auth.profile.phone);
   const database = getDatabase(app);
@@ -140,99 +140,109 @@ const DeliveryManUpload = () => {
   };
 
   return (
-    <div className="deliveryman-upload-container-upload">
-      <form className="upload-form-upload">
-        <label className="form-label-upload" htmlFor="lpgID">
-          LPG ID
-        </label>
+    <>
+      <Helmet>
+        <script
+          async
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4197896435460491"
+          crossorigin="anonymous"
+        ></script>
+      </Helmet>
+      <div className="deliveryman-upload-container-upload">
+        <form className="upload-form-upload">
+          <label className="form-label-upload" htmlFor="lpgID">
+            LPG ID
+          </label>
+          <input
+            className="form-input-upload"
+            type="number"
+            value={customerInfo.lpgID}
+            id="lpgID"
+            name="lpgID"
+            onChange={customerInfoUpdate}
+            required
+          />
+          <br />
+          <label className="form-label-upload" htmlFor="consumerName">
+            Consumer Name
+          </label>
+          <input
+            className="form-input-upload"
+            type="text"
+            value={customerInfo.consumerName}
+            id="consumerName"
+            name="consumerName"
+            required
+            onChange={customerInfoUpdate}
+          />
+          <br />
+          <label className="form-label-upload" htmlFor="consumerCity">
+            Consumer City
+          </label>
+          <input
+            className="form-input-upload"
+            type="text"
+            value={customerInfo.consumerCity}
+            id="consumerCity"
+            name="consumerCity"
+            onChange={customerInfoUpdate}
+            required
+          />
+          <br />
+          <label className="form-label-upload" htmlFor="consumerMobile">
+            Consumer Mobile
+          </label>
+          <input
+            className="form-input-upload"
+            type="number"
+            value={customerInfo.consumerMobile}
+            id="consumerMobile"
+            name="consumerMobile"
+            onChange={customerInfoUpdate}
+            required
+          />
+          <br />
+        </form>
         <input
-          className="form-input-upload"
-          type="number"
-          value={customerInfo.lpgID}
-          id="lpgID"
-          name="lpgID"
-          onChange={customerInfoUpdate}
+          className="file-input-upload"
+          type="file"
+          accept="image/*"
+          multiple
+          onChange={handleImageChange}
           required
         />
-        <br />
-        <label className="form-label-upload" htmlFor="consumerName">
-          Consumer Name
-        </label>
-        <input
-          className="form-input-upload"
-          type="text"
-          value={customerInfo.consumerName}
-          id="consumerName"
-          name="consumerName"
-          required
-          onChange={customerInfoUpdate}
-        />
-        <br />
-        <label className="form-label-upload" htmlFor="consumerCity">
-          Consumer City
-        </label>
-        <input
-          className="form-input-upload"
-          type="text"
-          value={customerInfo.consumerCity}
-          id="consumerCity"
-          name="consumerCity"
-          onChange={customerInfoUpdate}
-          required
-        />
-        <br />
-        <label className="form-label-upload" htmlFor="consumerMobile">
-          Consumer Mobile
-        </label>
-        <input
-          className="form-input-upload"
-          type="number"
-          value={customerInfo.consumerMobile}
-          id="consumerMobile"
-          name="consumerMobile"
-          onChange={customerInfoUpdate}
-          required
-        />
-        <br />
-      </form>
-      <input
-        className="file-input-upload"
-        type="file"
-        accept="image/*"
-        multiple
-        onChange={handleImageChange}
-        required
-      />
-      <p className="error-msg-upload">{error}</p>
-      <div className="image-preview-container-upload">
-        {images.map((image, index) => (
-          <div className="image-preview-upload" key={index}>
-            <img
-              className="preview-img-upload"
-              src={URL.createObjectURL(image)}
-              alt={`pic-${index}`}
-            />
-            <button
-              className="delete-btn-upload"
-              onClick={() => handleDeleteImage(index)}
-            >
-              Delete
-            </button>
-          </div>
-        ))}
+        <p className="error-msg-upload">{error}</p>
+        <div className="image-preview-container-upload">
+          {images.map((image, index) => (
+            <div className="image-preview-upload" key={index}>
+              <img
+                className="preview-img-upload"
+                src={URL.createObjectURL(image)}
+                alt={`pic-${index}`}
+              />
+              <button
+                className="delete-btn-upload"
+                onClick={() => handleDeleteImage(index)}
+              >
+                Delete
+              </button>
+            </div>
+          ))}
+        </div>
+        <button
+          className="upload-btn-upload"
+          onClick={uploadImages}
+          type="submit"
+        >
+          Upload
+        </button>
+        <p className="uploading-text-upload">{uploadingText}</p>
+        {uploadSuccess && (
+          <p className="success-msg-upload">Uploaded Successfully</p>
+        )}
+        <BannerAd />
       </div>
-      <button
-        className="upload-btn-upload"
-        onClick={uploadImages}
-        type="submit"
-      >
-        Upload
-      </button>
-      <p className="uploading-text-upload">{uploadingText}</p>
-      {uploadSuccess && (
-        <p className="success-msg-upload">Uploaded Successfully</p>
-      )}
-    </div>
+    </>
   );
 };
 

@@ -11,6 +11,8 @@ import {
 import NothingHereAnimation from "../../assets/nothing here animation.gif";
 import "./AdminPage.css";
 import Avatar from "../../assets/user avatar.png";
+import BannerAd from "../../components/AdSense/BannerAd";
+import { Helmet } from "react-helmet";
 
 const AdminPage = () => {
   const [submission, setSubmission] = useState([]);
@@ -42,98 +44,111 @@ const AdminPage = () => {
   }, [selectedOption, database]);
 
   return (
-    <div className="admin-page-container">
-      {error}
-      <select
-        value={selectedOption}
-        onChange={(e) => {
-          setSelectedOption(e.target.value);
-        }}
-        className="select"
-      >
-        <option value="Today">Today</option>
-        <option value="By Delivery Man">By Delivery Man</option>
-      </select>
-      {selectedOption === "Today" ? (
-        <div className="today-submissions-container">
-          {submission.map((obj, index) => {
-            if (!obj.admin) {
-              const todaysSubmissions = Object.values(
-                obj.mySubmission || {}
-              ).filter(
-                (submission) =>
-                  submission.timeDate?.timeDate?.date === currentDate
-              );
-              const hasSubmissionsToday = todaysSubmissions.length > 0;
-              return hasSubmissionsToday ? (
-                todaysSubmissions.map((sub, subIndex) => (
-                  <div
-                    key={`${index}-${subIndex}`}
-                    className="admin-submission-card"
-                  >
-                    <p>Posted By: {obj.userName.name}</p>
-                    <p>
-                      Posted on: {sub.timeDate?.timeDate?.date} at{" "}
-                      {sub.timeDate?.timeDate?.time}
-                    </p>
-                    <p>LPG ID: {sub.customerInfo?.customerInfo?.lpgID}</p>
-                    <p>
-                      Consumer Name:{" "}
-                      {sub.customerInfo?.customerInfo?.consumerName}
-                    </p>
-                    <p>
-                      Consumer City:{" "}
-                      {sub.customerInfo?.customerInfo?.consumerCity}
-                    </p>
-                    <p>
-                      Mobile: {sub.customerInfo?.customerInfo?.consumerMobile}
-                    </p>
-                    <div className="image-gallery-container">
-                      <ImageGallery phone={obj.phone.phone} lpgID={subIndex} />
+    <>
+      <Helmet>
+        <script
+          async
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4197896435460491"
+          crossorigin="anonymous"
+        ></script>
+      </Helmet>
+      <div className="admin-page-container">
+        {error}
+        <select
+          value={selectedOption}
+          onChange={(e) => {
+            setSelectedOption(e.target.value);
+          }}
+          className="select"
+        >
+          <option value="Today">Today</option>
+          <option value="By Delivery Man">By Delivery Man</option>
+        </select>
+        {selectedOption === "Today" ? (
+          <div className="today-submissions-container">
+            {submission.map((obj, index) => {
+              if (!obj.admin) {
+                const todaysSubmissions = Object.values(
+                  obj.mySubmission || {}
+                ).filter(
+                  (submission) =>
+                    submission.timeDate?.timeDate?.date === currentDate
+                );
+                const hasSubmissionsToday = todaysSubmissions.length > 0;
+                return hasSubmissionsToday ? (
+                  todaysSubmissions.map((sub, subIndex) => (
+                    <div
+                      key={`${index}-${subIndex}`}
+                      className="admin-submission-card"
+                    >
+                      <p>Posted By: {obj.userName.name}</p>
+                      <p>
+                        Posted on: {sub.timeDate?.timeDate?.date} at{" "}
+                        {sub.timeDate?.timeDate?.time}
+                      </p>
+                      <p>LPG ID: {sub.customerInfo?.customerInfo?.lpgID}</p>
+                      <p>
+                        Consumer Name:{" "}
+                        {sub.customerInfo?.customerInfo?.consumerName}
+                      </p>
+                      <p>
+                        Consumer City:{" "}
+                        {sub.customerInfo?.customerInfo?.consumerCity}
+                      </p>
+                      <p>
+                        Mobile: {sub.customerInfo?.customerInfo?.consumerMobile}
+                      </p>
+                      <div className="image-gallery-container">
+                        <ImageGallery
+                          phone={obj.phone.phone}
+                          lpgID={subIndex}
+                        />
+                      </div>
                     </div>
+                  ))
+                ) : (
+                  <div key={`${index}`} className="admin-submission-empty-card">
+                    {index === 0 && (
+                      <>
+                        <h2>No Submissions for Today</h2>{" "}
+                        <img
+                          className="nothingHereAnimation"
+                          src={NothingHereAnimation}
+                        ></img>
+                      </>
+                    )}
                   </div>
-                ))
-              ) : (
-                <div key={`${index}`} className="admin-submission-empty-card">
-                  {index === 0 && (
-                    <>
-                      <h2>No Submissions for Today</h2>{" "}
-                      <img
-                        className="nothingHereAnimation"
-                        src={NothingHereAnimation}
-                      ></img>
-                    </>
-                  )}
-                </div>
-              );
-            }
-            return null;
-          })}
-        </div>
-      ) : (
-        <div className="byDeliveryMan">
-          {submission.map(
-            (obj, index) =>
-              !obj.admin && (
-                <div key={index}>
-                  <Link
-                    to={{
-                      pathname: `/user/${obj.userName.name}`,
-                      state: obj,
-                    }}
-                    state={obj}
-                    className="deliverymanName"
-                  >
-                    <img className="avatar" src={Avatar} alt="" />
-                    {obj.userName.name}
-                  </Link>
-                  <br />
-                </div>
-              )
-          )}
-        </div>
-      )}
-    </div>
+                );
+              }
+              return null;
+            })}
+          </div>
+        ) : (
+          <div className="byDeliveryMan">
+            {submission.map(
+              (obj, index) =>
+                !obj.admin && (
+                  <div key={index}>
+                    <Link
+                      to={{
+                        pathname: `/user/${obj.userName.name}`,
+                        state: obj,
+                      }}
+                      state={obj}
+                      className="deliverymanName"
+                    >
+                      <img className="avatar" src={Avatar} alt="" />
+                      {obj.userName.name}
+                    </Link>
+                    <br />
+                  </div>
+                )
+            )}
+          </div>
+        )}
+        <BannerAd />
+      </div>
+    </>
   );
 };
 

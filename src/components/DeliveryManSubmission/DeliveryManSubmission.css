@@ -11,6 +11,13 @@
     background-color: #0056b3;
 }
 
+.delivery-man-submission{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
 .submission-details {
     margin-top: 10px;
 }
@@ -38,6 +45,10 @@
     display: flex;
     flex-wrap: wrap;
     justify-content: flex-start;
+}
+
+.loader{
+width: 150px;
 }
 
 .submission-image {
