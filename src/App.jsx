@@ -9,6 +9,7 @@ import { useEffect, useState } from "react";
 import DeliveryManPost from "./components/DeliveryManPost/DeliveryManPost";
 import LoadingScreen from "./Pages/StartUpAnimation";
 import { Helmet } from "react-helmet";
+import AdminPage from "./Pages/AdminPage/AdminPage";
 
 function App() {
   const [isLoading, setIsLoading] = useState(true);
@@ -51,6 +52,7 @@ function App() {
                 path="/user/:username"
                 element={<DeliveryManPost />}
               />
+               <Route path="/home/admin/:option" element={<AdminPage/>} />
             </Routes>
           </main>
         </div>

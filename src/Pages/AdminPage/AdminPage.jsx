@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { app } from "../../assets/firebase";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { child, get, getDatabase, ref } from "firebase/database";
 import {
   getDownloadURL,
@@ -20,6 +20,7 @@ const AdminPage = () => {
   const [selectedOption, setSelectedOption] = useState("Today");
   const database = getDatabase(app);
   const [currentDate, setCurrentDate] = useState("");
+  const navigate = useNavigate();
 
   useEffect(() => {
     const today = new Date();
@@ -29,6 +30,11 @@ const AdminPage = () => {
     const formattedDate = `${year}-${month}-${date}`;
     setCurrentDate(formattedDate);
   }, []);
+
+  useEffect(() => {
+    // Update the URL based on the selected option
+    navigate(`/home/admin/${selectedOption.toLowerCase()}`);
+  }, [selectedOption, navigate]);
 
   useEffect(() => {
     try {
@@ -58,6 +64,7 @@ const AdminPage = () => {
           value={selectedOption}
           onChange={(e) => {
             setSelectedOption(e.target.value);
+            navigate(`/home/admin/${selectedOption}`);
           }}
           className="select"
         >
