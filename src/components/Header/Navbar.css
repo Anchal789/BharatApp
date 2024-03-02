@@ -22,6 +22,7 @@
 }
   
 .logout-link {
+    margin: 10px;
     background-color: rgb(230, 230, 230);
     width: fit-content;
     padding: 10px;

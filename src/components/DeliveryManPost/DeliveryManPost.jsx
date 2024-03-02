@@ -5,10 +5,10 @@ import {
   listAll,
   ref as sref,
 } from "firebase/storage";
-import { useLocation, useParams} from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import { get, getDatabase, ref } from "firebase/database";
 import { app } from "../../assets/firebase";
-import "./DeliveryManPost.css"
+import "./DeliveryManPost.css";
 
 const DeliveryManPost = () => {
   const [submittedImages, setSubmittedImages] = useState([]);
@@ -64,31 +64,42 @@ const DeliveryManPost = () => {
   return (
     <div className="delivery-man-post-wrapper">
       <h3>{username}</h3>
+      <div className="delivery-man-posts">
       {submissionsArray.length === 0 ? (
         <p className="no-submission-message">No Submission by Delivery Man</p>
       ) : (
         submissionsArray.map((obj, index) => (
-          <div key={index} className="delivery-man-post-card">
-            {imagesLoaded ? (
-              submittedImages[index].map((img, imgIndex) => (
-                <img key={imgIndex} src={img} alt={`${imgIndex}`} />
-              ))
-            ) : (
-              "Images Loaded"
-            )}
-            <div className="delivery-man-post-info">
-              <p>
-                Posted on: {obj.timeDate?.timeDate?.date} at{" "}
-                {obj.timeDate?.timeDate?.time}
-              </p>
-              <p>LPG ID: {obj?.customerInfo?.customerInfo?.lpgID}</p>
-              <p>Consumer Name: {obj?.customerInfo?.customerInfo?.consumerName}</p>
-              <p>Consumer City: {obj?.customerInfo?.customerInfo?.consumerCity}</p>
-              <p>Mobile: {obj?.customerInfo?.customerInfo?.consumerMobile}</p>
+          <div key={index} className="submission-card">
+            <div className="card-details-name postedBY">
+              <h4>{obj?.customerInfo?.customerInfo?.consumerName}</h4>
+            </div>
+            <div className="card-details">
+              <p>{obj.timeDate?.timeDate?.date}</p>
+              <p>{obj.timeDate?.timeDate?.time}</p>
+            </div>
+            <div className="image-gallery-container">
+              {imagesLoaded
+                ? submittedImages[index].map((img, imgIndex) => (
+                    <img key={imgIndex} src={img} alt={`${imgIndex}`} />
+                  ))
+                : "Images Loaded"}
+            </div>
+            <div className="card-details">
+              <p>LPG ID </p>
+              <p>{obj?.customerInfo?.customerInfo?.lpgID}</p>
+            </div>
+            <div className="card-details">
+              <p>City</p>
+              <p>{obj?.customerInfo?.customerInfo?.consumerCity}</p>
+            </div>
+            <div className="card-details">
+              <p>Mobile </p>
+              <p>{obj?.customerInfo?.customerInfo?.consumerMobile}</p>
             </div>
           </div>
         ))
       )}
+    </div>
     </div>
   );
 };
