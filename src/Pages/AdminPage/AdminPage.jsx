@@ -51,13 +51,6 @@ const AdminPage = () => {
 
   return (
     <>
-      <Helmet>
-        <script
-          async
-          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4197896435460491"
-          crossorigin="anonymous"
-        ></script>
-      </Helmet>
       <div className="admin-page-container">
         {error}
         <select

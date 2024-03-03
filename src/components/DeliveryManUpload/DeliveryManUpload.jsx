@@ -141,13 +141,7 @@ const DeliveryManUpload = () => {
 
   return (
     <>
-      <Helmet>
-        <script
-          async
-          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4197896435460491"
-          crossorigin="anonymous"
-        ></script>
-      </Helmet>
+     
       <div className="deliveryman-upload-container-upload">
         <form className="upload-form-upload">
           <label className="form-label-upload" htmlFor="lpgID">
