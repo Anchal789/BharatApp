@@ -42,8 +42,8 @@ __Login Page__
 ![Login Page](./Screenshots/login%20page.png)
 
 ### Admin Portal
-__Today's Submission__
-![Today's Submission](./Screenshots/today.png)
+__Today Submission__
+![Today Submission](./Screenshots/today.png)
 __Delivery Man List__
 ![Delivery Man List](./Screenshots/delivery%20man%20list.png)
 __Delivery Man Submission__
