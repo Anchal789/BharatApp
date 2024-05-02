@@ -1,70 +1,56 @@
-# Getting Started with Create React App
+# LPG Distribution Management Web Application
+## Overview
+This project is a web application designed for local LPG distributors to manage customer data efficiently, specifically tailored for tracking customers under the Pradhan Mantri Ujjwala Yojana (PMUY). The application simplifies the process of capturing customer details and associated photos during connection deliveries, replacing the traditional paper-based record-keeping system.
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Technologies Used
+__Frontend__: _React, HTML, CSS_
+__State Management__: _Redux (with Redux Persist for persistent state)_
+__Authentication__: _Firebase Authentication_
+__Database__: _Firebase Realtime Database_
+__Hosting Platform__: _Firebase Hosting_
+__IDE__: _Visual Studio Code_
 
-## Available Scripts
+## Features by Portal
+1. ### Delivery Boy Portal
+- __Signup and Login__: Delivery boys can register using their phone numbers and OTP for authentication. Subsequent logins are streamlined with phone number-based authentication.
+- __Customer Data Entry__: Delivery boys can fill out a form with customer details (name, address, etc.) and upload a photo of the customer during connection delivery.
+- __My Submissions__: Delivery boys can view a list of their submissions, including customer details and photos.
+2. ### Admin Portal
+- __Signup and Login__: Admins register and log in using phone number-based authentication.
+- __Today's Submissions__: Admins can view submissions made by delivery boys on the current day. If no submissions are made, a designated message or animation informs about the absence of submissions.
+- __Deliveryman Overview__: Admins can access a dropdown list of delivery boys and view each delivery man's submission history by selecting their name.
 
-In the project directory, you can run:
+## Database Structure
+The Firebase Realtime Database is structured to store:
 
-### `npm start`
+- Delivery boy information (phone number, submissions)
+- Customer data linked to delivery submissions (name, address, photo URL)
+- Log of submissions with timestamps for tracking and review
+## Deployment and State Management
+The application is deployed using Firebase Hosting for easy access and scalability. Redux with Redux Persist is utilized for state management, ensuring that user sessions and data persist across page reloads.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## Git Repository
+The Git repository for this project contains the source code, detailed documentation, and setup instructions for better understanding and replication of the system. It showcases the implementation of frontend components, authentication, database integration, and state management using Redux.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## Screenshots
 
-### `npm test`
+__Start Up Page__
+![Start Up Page](./Screenshots/startup%20page.png)
+__Start Up Page__
+![Start Up Page](./Screenshots/register.png)
+__Login Page__
+![Login Page](./Screenshots/login%20page.png)
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### Admin Portal
+__Today's Submission__
+![Today's Submission](./Screenshots/today.png)
+__Delivery Man List__
+![Delivery Man List](./Screenshots/delivery%20man%20list.png)
+__Delivery Man Submission__
+![Delivery Man Submission](./Screenshots/delivery%20man%20submission.png)
 
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+### Delivery Man Portal
+__Delivery Man Form__
+![Delivery Man Form](./Screenshots/delivery%20man%20form.png)
+__Delivery Man Submission__
+![Delivery Man Submission](./Screenshots/deliveryman.png)
